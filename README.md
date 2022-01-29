@@ -22,11 +22,14 @@ Overall Procedure
 RoseTTAFold
 ---
 
-Run the following scripts at a command line. We used `input.fa` as the input and `complex_0001.pdb` as output here.
+* **Input**: Antibody heavy and light chain sequences
+* **Output**: `complex_0001.pdb`
+
+Run the following scripts at a command line, taking heavy chain `input_h.fa` and light chain `input_l.fa` as input separately.
 
 ```bash
 # Generating MSA
-run_e2e_ver.sh input.fa .
+run_e2e_ver.sh input_h.fa .
 
 # Generating pMSA
 python make_joint_MSA_bacterial.py H.a3m L.a3m
@@ -65,7 +68,7 @@ ABodyBuilder Modelling
 ---
 
 * **Input**: Antibody heavy and light chain sequences
-* **Output**: `<PDB_ID>_ab.pdb` or `<PDB_ID>A.pdb`
+* **Output**: `<PDB_ID>_ab.pdb`
 
 
 RMSD Calculation
@@ -80,12 +83,17 @@ profit
 
 Then run the following scripts under the **ProFit** prompt, replacing with actual file names and parameters:
 ```bash
-reference PDB_ID.pdb
-mobile MODEL_NAME.pdb
+reference 1fl5_heavy.pdb # Heavy chain of 1fl5 crystal structure
+mobile 1fl5_090_heavy.pdb # Heavy chain of structure which chose template with GMQE score 0.9
 atoms N,CA,C,O # Backbone atoms
-zone 24-34 # The framework region of the first fit
+zone 1-25 # The framework regions of the first fit
+zone 34-50
+zone 61-98
+zone 109-119
 fit
-rzone 30-40 # CDR region
+rzone 26-33 # Fit CDR regions
 delrzone * # Must clear the rzone before testing another CDR region
-rzone 40-50
+rzone 51-60
+delrzone *
+rzone 99-108
 ```
