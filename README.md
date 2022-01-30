@@ -22,14 +22,15 @@ Overall Procedure
 RoseTTAFold
 ---
 
-* **Input**: Antibody heavy and light chain sequences
+* **Input**: Antibody heavy and light chain sequences in **FASTA** format, i.e., `input_h.fa` and `input_l.fa`
 * **Output**: `complex_0001.pdb`
 
-Run the following scripts at a command line, taking heavy chain `input_h.fa` and light chain `input_l.fa` as input separately.
+Run the following scripts at a command line. It may take hours to days to run depending on user's computer performance.
 
 ```bash
 # Generating MSA
 run_e2e_ver.sh input_h.fa .
+run_e2e_ver.sh input_l.fa .
 
 # Generating pMSA
 python make_joint_MSA_bacterial.py H.a3m L.a3m
@@ -39,6 +40,7 @@ hhfilter -i paired.a3m -o filtered.a3m -id 90 -cov 75
 
 # Modeling 3D structure
 complex.sh H.fa .
+complex.sh L.fa .
 
 # Relaxing complex structure
 relax.static.linuxgccrelease \
@@ -60,14 +62,14 @@ relax.static.linuxgccrelease \
 SWISS-MODEL Modelling
 ---
 
-* **Input**: Antibody heavy and light chain sequences
+* **Input**: Plain antibody heavy and light chain sequences
 * **Output**: `<PDB_ID>_GMQE.pdb`
 
 
 ABodyBuilder Modelling
 ---
 
-* **Input**: Antibody heavy and light chain sequences
+* **Input**: Plain antibody heavy and light chain sequences
 * **Output**: `<PDB_ID>_ab.pdb`
 
 
